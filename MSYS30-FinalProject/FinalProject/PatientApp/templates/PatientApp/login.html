@@ -1,1 +1,48 @@
+{% extends "PatientApp/base.html" %}
 
+{% block content %}
+<div class="auth-card">
+    <h2>Log-In</h2>
+    
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="errorlist" style="color: red; margin-bottom: 10px; font-size: 14px;">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            {% if field.name == 'username' %}
+                <label for="{{ field.id_for_label }}">Username</label>
+                {{ field.errors }}
+                <input type="text" 
+                       id="{{ field.id_for_label }}" 
+                       name="{{ field.name }}" 
+                       placeholder="Enter your Username" 
+                       required>
+
+            {% elif field.name == 'password' %}
+                 <label for="{{ field.id_for_label }}">Password</label>
+                {{ field.errors }}
+                <input type="password" 
+                       id="{{ field.id_for_label }}" 
+                       name="{{ field.name }}" 
+                       placeholder="Enter your password" 
+                       required>
+            {% endif %}
+        {% endfor %}
+
+        <button type="submit" class="btn-primary">Log-In</button>
+    </form>
+
+    <div class="auth-links">
+        <p style="margin-top: 15px; font-size: 14px;">
+            No account? <a href="{% url 'signup' %}">Register here</a>
+        </p>
+    </div>
+</div>
+{% endblock content %}
