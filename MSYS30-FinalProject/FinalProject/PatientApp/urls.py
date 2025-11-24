@@ -22,4 +22,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('checkin/', views.check_in_patient, name='patient_check_in'),
     path('patientmanagement/', views.patient_management, name='patient_management'),
-    path('call/<int:patient_id>/', views.call_next_patient, name='call_next_patient'),]
+    path('call/<int:patient_id>/', views.call_next_patient, name='call_next_patient'),
+    path('signup/', views.signup_view, name='signup'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+]
+
