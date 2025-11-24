@@ -1,1 +1,22 @@
+{% extends "PatientApp/base.html" %}
 
+{% block content %}
+<div style="text-align: center; padding: 50px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="auth-card" style="max-width: 600px; padding: 40px;">
+        <h2 style="font-size: 36px; color: #1a4d8c; margin-bottom: 20px;">
+            Hello World, {{ user.username }}!
+        </h2>
+        <p style="font-size: 18px; color: #555;">
+            This is your temporary ClinicaFlow Dashboard.
+        </p>
+        <p style="margin-top: 30px;">
+            You have successfully implemented your login and sign-up pages.
+        </p>
+        
+        <!-- Log Out Button -->
+        <a href="{% url 'logout' %}" class="btn-primary" style="margin-top: 30px; display: inline-block; width: auto; padding: 10px 25px;">
+            Log Out
+        </a>
+    </div>
+</div>
+{% endblock content %}
