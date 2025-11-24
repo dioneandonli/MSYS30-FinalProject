@@ -1,0 +1,156 @@
+{% extends 'PatientApp/base.html' %}
+
+{% block content %}
+
+<style>
+.main-card {
+    border: 1px solid #dee2e6; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; 
+    overflow: hidden;
+}
+
+
+.attending-card-header {
+    background-color: #0b4f8d; 
+    color: white;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.patient-id-large {
+    font-size: 3rem;
+    font-weight: 800;
+    color: black; 
+    line-height: 1;
+    margin-top: 5px; 
+}
+
+.col-md-9 > .p-3.border {
+    
+    border-left: 1px solid #dee2e6 !important; 
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    height: 100%; 
+}
+
+
+.waiting-table thead {
+    background-color: #0b4f8d;
+    color: white;
+}
+.waiting-table th {
+    text-align: center; 
+}
+.waiting-table td {
+    vertical-align: middle;
+}
+
+.call-next-row {
+    background-color: #e9ecef; 
+}
+</style>
+
+<div class="header-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h3 class="mb-0 text-white">ClinicaFlow</h3> 
+    </div>
+</div>
+
+<div class="container mt-4">
+    
+    <div class="row mb-3">
+        <div class="col d-flex justify-content-between fw-bold fs-5">
+            <span>{{ current_date }}</span> 
+            <span>{{ current_time }}</span> 
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card main-card border-0"> 
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        {% if currently_consulting %}
+                            <div class="col-md-3">
+                                <div class="attending-card-header">Current Attending Patient</div>
+                                <div class="text-center p-3">
+                                    <p class="patient-id-large">{{ currently_consulting.patient_id }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-9">
+                                <div class="p-3 border">
+                                    <h5 class="mb-2">{{ currently_consulting.name }}</h5>
+                                    <p class="mb-0">{{ currently_consulting.date_of_birth|date:"F d, Y" }}</p>
+                                    <p class="mb-0">{{ currently_consulting.get_gender_display }}</p>
+                                    <p class="mb-3">{{ currently_consulting.reason_for_visit }}</p>
+                                    
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-secondary btn-sm" type="button">Details</button>
+                                        <button class="btn btn-secondary btn-primary" type="button">Complete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-12 text-center p-4">
+                                <h3>No patient currently in consultation.</h3>
+                                <p>The next patient will be highlighted in the queue below.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="🔍 Search for anything">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-hover waiting-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 15%;">ID</th>
+                            <th scope="col" style="width: 35%;">Name</th>
+                            <th scope="col" style="width: 30%;">Condition</th>
+                            <th scope="col" style="width: 20%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in waiting_patients %}
+                            <tr class="{% if forloop.first and not currently_consulting %}call-next-row{% endif %}">
+                                <td>{{ patient.patient_id }}</td>
+                                <td>{{ patient.name }}</td>
+                                <td>{{ patient.reason_for_visit }}</td>
+                                <td class="text-end">
+                                    {% if forloop.first and not currently_consulting %}
+                                    <a href="{% url 'call_next_patient' patient.id %}" class="btn btn-primary btn-sm" role="button">Call Next Patient</a>
+                                    {% else %}
+                                    <button class="btn btn-secondary btn-sm" type="button">Details</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center p-3">🎉 The waiting queue is empty!</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
