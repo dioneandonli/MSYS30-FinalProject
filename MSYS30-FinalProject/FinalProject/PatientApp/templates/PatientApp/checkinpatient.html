@@ -1,0 +1,63 @@
+{% extends 'PatientApp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>Patient Check-In</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">Patient Details</h5>
+                    
+                    <form method="POST">
+                        {% csrf_token %} 
+                        
+                        <div class="mb-3">
+                            <label for="id_name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="id_name" name="name" placeholder="Enter full name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_gender" class="form-label">Gender</label>
+                            <select class="form-select" id="id_gender" name="gender" required>
+                                <option value="" selected disabled>Select Gender</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                                <option value="O">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="id_dob" name="date_of_birth" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_contact" class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="id_contact" name="contact_info" placeholder="09XX XXX XXXX">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_reason" class="form-label">Reason for Visit</label>
+                            <input type="text" class="form-control" id="id_reason" name="reason_for_visit" placeholder="Brief reason">
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-success flex-fill me-2">
+                                Register Patient
+                            </button>
+                            
+                            <button type="reset" class="btn btn-danger flex-fill ms-2">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% comment %} Note: The html, head, and body tags are typically in base.html when using {% extends %}. {% endcomment %}
+{% endblock %}
