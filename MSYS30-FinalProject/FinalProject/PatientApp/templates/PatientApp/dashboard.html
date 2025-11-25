@@ -112,19 +112,13 @@
     }
     .search-input {
         width: 100%;
-        padding: 12px 15px 12px 40px;
+        padding: 12px 15px; /* Removed left padding for icon */
         border: 1px solid #eee;
         border-radius: 6px;
         font-size: 14px;
         background-color: #fff;
     }
-    .search-icon {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #999;
-    }
+    /* Removed .search-icon class */
 
     /* Queue Table */
     .queue-table {
@@ -202,7 +196,7 @@
 
     <!-- 3. SEARCH BAR -->
     <div class="search-container">
-        <span class="search-icon">🔍</span>
+        <!-- Removed search icon span -->
         <!-- TODO: Add name="q" and wrap in form for search functionality -->
         <input type="text" class="search-input" placeholder="Search for anything">
     </div>
