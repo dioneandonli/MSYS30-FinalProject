@@ -165,7 +165,7 @@
     <!-- 2. CURRENT ATTENDING PATIENT CARD -->
     <!-- 
          TODO: Backend Connection 
-         Wrap this entire card in an {% if current_patient %} block.
+         Wrap this entire card in an { if current_patient } block.
          If no patient is active, you can show a "Waiting for next patient..." message instead.
     -->
     <div class="current-patient-card">
@@ -220,21 +220,21 @@
         <tbody>
             <!-- 
                 TODO: Loop through your queue list here.
-                Example:
-                {% for patient in queue_list %}
+                Example Structure (Remove the backslashes when implementing):
+                { for patient in queue_list }
                 <tr>
-                    <td>{{ patient.patient_id }}</td>
-                    <td>{{ patient.name }}</td>
-                    <td>{{ patient.condition }}</td>
+                    <td>{ patient.patient_id }</td>
+                    <td>{ patient.name }</td>
+                    <td>{ patient.condition }</td>
                     <td style="text-align: right;">
                         <button class="btn-small btn-details">Details</button>
                     </td>
                 </tr>
-                {% empty %}
+                { empty }
                 <tr>
                     <td colspan="4" class="empty-message">No patients in queue.</td>
                 </tr>
-                {% endfor %}
+                { endfor }
             -->
             
             <!-- Placeholder row so the table isn't invisible right now -->
