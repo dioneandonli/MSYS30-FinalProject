@@ -1,0 +1,119 @@
+{% extends "PatientApp/base.html" %}
+
+{% block content %}
+
+<style>
+    /* Card specific style for this page */
+    .details-card {
+        max-width: 600px !important; 
+    }
+
+    /* Page Title outside the card */
+    .page-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #000;
+    }
+
+    /* Edit Button (Blue) */
+    .btn-edit {
+        background-color: #3b82f6; /* Blue */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 120px;
+        font-size: 14px;
+    }
+    .btn-edit:hover {
+        background-color: #2563eb;
+    }
+
+    /* Back Button (Gray) */
+    .btn-back {
+        background-color: #6c757d; /* Gray */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 120px;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        font-size: 14px;
+    }
+    .btn-back:hover {
+        background-color: #5c636a;
+    }
+
+    /* Button Container */
+    .button-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding: 0 20px;
+    }
+</style>
+
+<div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+    
+    <!-- Title Outside -->
+    <h1 class="page-title">Patient Details</h1>
+
+    <!-- The Card -->
+    <div class="auth-card details-card">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 25px;">Patient Details</h3>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Name -->
+            <label for="name">Name</label>
+            <!-- TODO: Add value="{{ patient.name }}" later -->
+            <input type="text" id="name" name="name" placeholder="" readonly>
+
+            <!-- Gender -->
+            <label for="gender">Gender</label>
+            <!-- TODO: Logic to select the correct option based on patient data -->
+            <select id="gender" name="gender" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; background: white;" disabled>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <!-- Date of Birth -->
+            <label for="dob">Date of Birth</label>
+            <!-- TODO: Add value="{{ patient.dob }}" later -->
+            <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" readonly>
+
+            <!-- Contact Number -->
+            <label for="contact">Contact Number</label>
+            <!-- TODO: Add value="{{ patient.contact }}" later -->
+            <input type="text" id="contact" name="contact" placeholder="0917 123 4567" readonly>
+
+            <!-- Reason for Visit -->
+            <label for="reason">Reason for Visit</label>
+            <!-- TODO: Add value="{{ patient.reason }}" later -->
+            <input type="text" id="reason" name="reason" placeholder="Value" readonly>
+
+            <!-- Buttons -->
+            <div class="button-row">
+                <!-- Back Button (Left) -->
+                <a href="{% url 'dashboard' %}" class="btn-back">Back</a>
+
+                <!-- Edit Button (Right) -->
+                <!-- Use type="button" to prevent submitting the form since it's just an edit toggle for now -->
+                <button type="button" class="btn-edit">Edit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
