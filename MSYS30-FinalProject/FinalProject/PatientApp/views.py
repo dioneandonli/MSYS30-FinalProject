@@ -103,5 +103,6 @@ def logout_view(request):
 # --- Dashboard View ---
 @login_required
 def dashboard_view(request):
-    return render(request, 'PatientApp/temporaryDashboard.html', {'title': 'Dashboard'})
+    return render(request, 'PatientApp/dashboard.html', {'title': 'Dashboard'})
+
 
