@@ -1,0 +1,235 @@
+{% extends "PatientApp/base.html" %}
+
+{% block content %}
+<style>
+    /* Dashboard-specific container */
+    .dashboard-container {
+        width: 100%;
+        max-width: 900px;
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Date and Time Header */
+    .datetime-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 30px;
+        color: #000;
+    }
+
+    /* Current Patient Card */
+    .current-patient-card {
+        display: flex;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        min-height: 200px;
+    }
+
+    .patient-id-box {
+        width: 40%;
+        text-align: center;
+        border-right: 1px solid #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+    }
+    .id-header {
+        background-color: #1a4d8c;
+        color: white;
+        padding: 10px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .id-number {
+        font-size: 48px;
+        font-weight: 800;
+        color: #000;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .patient-details-box {
+        width: 60%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: left;
+    }
+    .patient-name {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        min-height: 27px;
+    }
+    .patient-info {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        min-height: 60px;
+    }
+
+    /* Buttons */
+    .card-actions {
+        display: flex;
+        gap: 10px;
+    }
+    .btn-small {
+        padding: 8px 15px;
+        font-size: 13px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+    .btn-details {
+        background: white;
+        border: 1px solid #ccc;
+        color: #333;
+    }
+    .btn-complete {
+        background-color: #3b82f6;
+        color: white;
+    }
+    .btn-call {
+        background-color: #65d669; /* Green Call Button */
+        color: white;
+    }
+    .btn-call:hover {
+        background-color: #50c454;
+    }
+
+    /* Queue Table */
+    .queue-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #eee;
+        margin-top: 20px;
+    }
+    .queue-table th {
+        background-color: #1a4d8c;
+        color: white;
+        text-align: left;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .queue-table td {
+        padding: 12px 20px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+        font-size: 14px;
+    }
+    .empty-message {
+        text-align: center;
+        padding: 20px;
+        color: #777;
+        font-style: italic;
+    }
+</style>
+
+<div class="dashboard-container">
+    
+    <!-- 1. HEADER -->
+    <div class="datetime-header">
+        <span>{{ current_date }}</span>
+        <span id="current-time">---</span>
+    </div>
+
+    <!-- 2. CURRENT PATIENT CARD -->
+    {% if currently_consulting %}
+    <div class="current-patient-card">
+        <div class="patient-id-box">
+            <div class="id-header">Current Attending Patient</div>
+            <div class="id-number">{{ currently_consulting.patient_id }}</div> 
+        </div>
+        
+        <div class="patient-details-box">
+            <div class="patient-name">{{ currently_consulting.name }}</div>
+            
+            <div class="patient-info">
+                Born: {{ currently_consulting.date_of_birth }}<br>
+                Gender: {{ currently_consulting.gender }}<br>
+                Condition: {{ currently_consulting.reason_for_visit }}
+            </div>
+
+            <div class="card-actions">
+                <!-- FIXED: Added currently_consulting.id here -->
+                <a href="{% url 'patient_details' currently_consulting.id %}" class="btn-small btn-details">Details</a>
+                
+                <a href="{% url 'complete_current_patient' %}" class="btn-small btn-complete">Complete</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="current-patient-card">
+        <div class="patient-id-box">
+            <div class="id-header">Current Attending Patient</div>
+            <div class="id-number">---</div>
+        </div>
+        <div class="patient-details-box">
+            <div class="patient-name">Waiting for patient...</div>
+            <div class="patient-info">No one is currently in consultation.</div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 3. QUEUE TABLE -->
+    <table class="queue-table">
+        <thead>
+            <tr>
+                <th style="width: 15%;">ID</th>
+                <th style="width: 35%;">Name</th>
+                <th style="width: 30%;">Condition</th>
+                <th style="width: 20%;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in waiting_patients %}
+            <tr>
+                <td>{{ patient.patient_id }}</td>
+                <td>{{ patient.name }}</td>
+                <td>{{ patient.reason_for_visit }}</td>
+                <td style="text-align: right; display: flex; gap: 5px; justify-content: flex-end;">
+                    
+                    <!-- FIXED: Changed <button> to <a> and added patient.id -->
+                    <a href="{% url 'patient_details' patient.id %}" class="btn-small btn-details">Details</a>
+                    
+                    <!-- Call Button Logic -->
+                    <a href="{% url 'call_next_patient' patient.id %}" class="btn-small btn-call">Call</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-message">No patients waiting in queue.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('current-time').innerText = now.toLocaleTimeString();
+    }
+    setInterval(updateTime, 1000); 
+    updateTime(); 
+</script>
+
+{% endblock content %}

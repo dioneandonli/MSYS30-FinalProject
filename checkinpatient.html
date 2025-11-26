@@ -1,0 +1,94 @@
+{% extends "PatientApp/base.html" %}
+
+{% block content %}
+<style>
+    /* Specific styles for the check-in card */
+    .checkin-card {
+        max-width: 600px !important; 
+    }
+
+    .page-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #000;
+    }
+
+    .btn-submit {
+        background-color: #65d669; /* Green */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 120px;
+    }
+    .btn-submit:hover {
+        background-color: #50c454;
+    }
+
+    .btn-cancel {
+        background-color: #ff5f57; /* Red */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 120px;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+    .btn-cancel:hover {
+        background-color: #e64b43;
+    }
+
+    .button-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding: 0 20px;
+    }
+</style>
+
+<div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+    
+    <h1 class="page-title">Patient Check-In</h1>
+
+    <div class="auth-card checkin-card">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 25px;">Patient Details</h3>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required placeholder="Enter Full Name">
+
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; background: white;">
+                <option value="" disabled selected>Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+            </select>
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="contact">Contact Number</label>
+            <input type="text" id="contact" name="contact" placeholder="0917 123 4567">
+
+            <label for="reason">Reason for Visit</label>
+            <input type="text" id="reason" name="reason" placeholder="Brief reason">
+
+            <div class="button-row">
+                <button type="submit" class="btn-submit">Register Patient</button>
+                <a href="{% url 'dashboard' %}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

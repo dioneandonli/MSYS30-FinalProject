@@ -1,0 +1,283 @@
+{% extends "PatientApp/base.html" %}
+
+{% block content %}
+<style>
+    /* Full screen container */
+    .queue-container {
+        width: 100%;
+        max-width: 1200px; /* Large screen width */
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        display: flex;
+        gap: 40px; /* Space between left and right panels */
+    }
+
+    /* --- LEFT SIDE (Current & Next) --- */
+    .left-panel {
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* Common Card Styles */
+    .status-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+        text-align: center;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .card-header {
+        background-color: #1a4d8c; /* Dark Blue */
+        color: white;
+        padding: 15px;
+        font-weight: 700;
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    .card-body {
+        padding: 40px 20px;
+    }
+
+    .big-id {
+        font-size: 64px;
+        font-weight: 800;
+        color: #000;
+        margin: 0;
+    }
+
+    /* --- RIGHT SIDE (The List 01-14) --- */
+    .right-panel {
+        width: 65%;
+    }
+
+    /* The Grid for 14 slots */
+    .queue-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2 Columns */
+        grid-template-rows: repeat(7, 1fr); /* 7 Rows */
+        grid-auto-flow: column; /* Fills down first, then right */
+        gap: 10px; /* Space between rows/cols */
+        height: 100%;
+    }
+
+    /* Individual List Item */
+    .queue-item {
+        display: flex;
+        border: 1px solid #ddd;
+        height: 50px; /* Fixed height for consistency */
+    }
+
+    .queue-number {
+        background-color: #3b82f6; /* Lighter Blue */
+        color: white;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .queue-name {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+        font-weight: 600;
+        font-size: 18px;
+        color: #333;
+        background-color: #fff; /* Default white */
+    }
+
+    /* Make every other row light grey for readability */
+    .queue-item:nth-child(even) .queue-name {
+        background-color: #f9f9f9; 
+    }
+
+    /* Date/Time Header (Reused) */
+    .datetime-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+</style>
+
+<div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+    
+    <!-- Time Header -->
+    <div class="queue-container" style="padding-bottom: 10px; box-shadow: none; margin-bottom: -20px;">
+        <div class="datetime-header">
+            <span id="current-date">---</span>
+            <span id="current-time">---</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="queue-container">
+        
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            
+            <!-- 1. Current Attending Patient -->
+            <div class="status-card">
+                <div class="card-header">Current Attending Patient</div>
+                <div class="card-body">
+                    <!-- 
+                         TODO: Insert Current Patient ID Here
+                         Example: {{ current_patient.id }}
+                    -->
+                    <div class="big-id">---</div>
+                </div>
+            </div>
+
+            <!-- 2. Next Patient -->
+            <div class="status-card">
+                <div class="card-header">Next Patient</div>
+                <div class="card-body">
+                    <!-- 
+                         TODO: Insert Next Patient ID Here
+                         Example: {{ next_patient.id }}
+                    -->
+                    <div class="big-id">---</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL (The Grid) -->
+        <div class="right-panel">
+            <div class="queue-grid">
+                
+                <!-- 
+                    TODO: Loop Logic
+                    You will need to loop through a list of 14 items (or empty slots).
+                    Since the grid is set to flow vertically (column), just outputting 14 divs will work perfectly.
+                    
+                    Example Logic:
+                    {% for i in range_14 %}
+                        <div class="queue-item">
+                           <div class="queue-number">{{ forloop.counter }}</div>
+                           <div class="queue-name">
+                               Check if index exists in patient_list, then print Name/ID
+                           </div>
+                        </div>
+                    {% endfor %}
+                -->
+
+                <!-- Placeholder Items (Static for now) -->
+                
+                <!-- Item 01 -->
+                <div class="queue-item">
+                    <div class="queue-number">01</div>
+                    <div class="queue-name">
+                        <!-- TODO: Insert Patient P-00X here -->
+                    </div>
+                </div>
+
+                <!-- Item 02 -->
+                <div class="queue-item">
+                    <div class="queue-number">02</div>
+                    <div class="queue-name">
+                        <!-- TODO: Insert Patient here -->
+                    </div>
+                </div>
+
+                <!-- Item 03 -->
+                <div class="queue-item">
+                    <div class="queue-number">03</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 04 -->
+                <div class="queue-item">
+                    <div class="queue-number">04</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 05 -->
+                <div class="queue-item">
+                    <div class="queue-number">05</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 06 -->
+                <div class="queue-item">
+                    <div class="queue-number">06</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 07 -->
+                <div class="queue-item">
+                    <div class="queue-number">07</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 08 -->
+                <div class="queue-item">
+                    <div class="queue-number">08</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 09 -->
+                <div class="queue-item">
+                    <div class="queue-number">09</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 10 -->
+                <div class="queue-item">
+                    <div class="queue-number">10</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 11 -->
+                <div class="queue-item">
+                    <div class="queue-number">11</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 12 -->
+                <div class="queue-item">
+                    <div class="queue-number">12</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 13 -->
+                <div class="queue-item">
+                    <div class="queue-number">13</div>
+                    <div class="queue-name"></div>
+                </div>
+
+                <!-- Item 14 -->
+                <div class="queue-item">
+                    <div class="queue-number">14</div>
+                    <div class="queue-name"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('current-time').innerText = now.toLocaleTimeString();
+        document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    setInterval(updateTime, 1000); 
+    updateTime(); 
+</script>
+
+{% endblock content %}
