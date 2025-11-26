@@ -1,5 +1,3 @@
-# PatientApp/models.py
-
 from django.db import models
 
 class Patient(models.Model):
@@ -12,7 +10,7 @@ class Patient(models.Model):
     
     STATUS_CHOICES = [
         ('Waiting', 'Waiting'),
-        ('Consulting', 'Consultation On-going'),
+        ('Consulting', 'Consulting'),
         ('Completed', 'Completed'),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Waiting')
@@ -28,3 +26,6 @@ class Patient(models.Model):
             # Generate P-ID using the primary key
             self.patient_id = f"P-{self.pk:05d}"
             super().save(update_fields=['patient_id'])
+
+    def __str__(self):
+        return f"{self.patient_id} - {self.name}"
