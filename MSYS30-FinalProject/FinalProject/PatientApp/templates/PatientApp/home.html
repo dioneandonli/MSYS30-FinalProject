@@ -1,0 +1,125 @@
+{% extends "PatientApp/base.html" %}
+
+{% block content %}
+<style>
+    /* Home Specific Container */
+    .home-container {
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .welcome-text {
+        font-size: 32px;
+        font-weight: 700;
+        color: #1a4d8c;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: #666;
+        font-size: 16px;
+        margin-bottom: 40px;
+    }
+
+    /* Container for the Action Buttons */
+    .action-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: center;
+    }
+
+    /* Rows for grouping buttons */
+    .action-row {
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* The Action Cards (Buttons) */
+    .action-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 30px 20px;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 140px; /* Reduced height since icons are gone */
+        width: 260px;  /* Fixed width for consistency */
+        flex-shrink: 0;
+    }
+
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        border-color: #3b82f6;
+    }
+
+    .card-title {
+        font-size: 20px; /* Slightly larger text */
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1a4d8c;
+    }
+
+    .card-desc {
+        font-size: 13px;
+        color: #777;
+        line-height: 1.4;
+    }
+
+    /* Specific Border Colors for variety */
+    .card-register:hover { border-bottom: 4px solid #3b82f6; } /* Blue */
+    .card-queue:hover { border-bottom: 4px solid #65d669; }    /* Green */
+    .card-public:hover { border-bottom: 4px solid #f59e0b; }   /* Orange */
+
+</style>
+
+<div class="home-container">
+    
+    <div class="welcome-text">Welcome, {{ user.username }}!</div>
+    <div class="subtitle">Select an action to proceed</div>
+
+    <div class="action-container">
+        
+        <!-- Row 1: Primary Actions -->
+        <div class="action-row">
+            <!-- 1. REGISTER PATIENT -->
+            <a href="{% url 'checkin' %}" class="action-card card-register">
+                <div class="card-title">Register Patient</div>
+                <div class="card-desc">Check-in a new patient</div>
+            </a>
+
+            <!-- 2. VIEW PATIENT QUEUE -->
+            <a href="{% url 'dashboard' %}" class="action-card card-queue">
+                <div class="card-title">Manage Queue</div>
+                <div class="card-desc">View active patients and status</div>
+            </a>
+        </div>
+
+        <!-- Row 2: Public Display (Centered) -->
+        <div class="action-row">
+            <!-- 3. PUBLIC DASHBOARD -->
+            <a href="{% url 'queue_display' %}" target="_blank" class="action-card card-public">
+                <div class="card-title">Public Display</div>
+                <div class="card-desc">Open waiting room screen</div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
