@@ -22,7 +22,7 @@
         color: #000;
     }
 
-    /* Current Patient Card (The Big Box) */
+    /* Current Patient Card */
     .current-patient-card {
         display: flex;
         border: 1px solid #e0e0e0;
@@ -30,10 +30,9 @@
         overflow: hidden;
         margin-bottom: 30px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-        min-height: 200px; /* Ensures height even if empty */
+        min-height: 200px;
     }
 
-    /* Left Side (Blue Header & ID) */
     .patient-id-box {
         width: 40%;
         text-align: center;
@@ -58,7 +57,6 @@
         justify-content: center;
     }
 
-    /* Right Side (Details) */
     .patient-details-box {
         width: 60%;
         padding: 20px;
@@ -71,17 +69,16 @@
         font-size: 22px;
         font-weight: 700;
         margin-bottom: 10px;
-        min-height: 27px; /* Maintains layout if empty */
+        min-height: 27px;
     }
     .patient-info {
         font-size: 14px;
         color: #555;
         line-height: 1.6;
         margin-bottom: 20px;
-        min-height: 60px; /* Maintains layout if empty */
+        min-height: 60px;
     }
 
-    /* Action Buttons in Card */
     .card-actions {
         display: flex;
         gap: 10px;
@@ -94,6 +91,8 @@
         font-weight: 600;
         border: none;
         text-decoration: none;
+        display: inline-block;
+        text-align: center;
     }
     .btn-details {
         background: white;
@@ -104,27 +103,22 @@
         background-color: #3b82f6;
         color: white;
     }
-
-    /* Search Bar */
-    .search-container {
-        position: relative;
-        margin-bottom: 25px;
+    /* New Call Button Style */
+    .btn-call {
+        background-color: #65d669;
+        color: white;
+        border: none;
     }
-    .search-input {
-        width: 100%;
-        padding: 12px 15px; /* Removed left padding for icon */
-        border: 1px solid #eee;
-        border-radius: 6px;
-        font-size: 14px;
-        background-color: #fff;
+    .btn-call:hover {
+        background-color: #50c454;
     }
-    /* Removed .search-icon class */
 
     /* Queue Table */
     .queue-table {
         width: 100%;
         border-collapse: collapse;
         border: 1px solid #eee;
+        margin-top: 20px;
     }
     .queue-table th {
         background-color: #1a4d8c;
@@ -150,106 +144,90 @@
 
 <div class="dashboard-container">
     
-    <!-- 1. DATE AND TIME HEADER -->
+    <!-- 1. HEADER -->
     <div class="datetime-header">
-        <span id="current-date">---</span>
+        <span>{{ current_date }}</span>
         <span id="current-time">---</span>
     </div>
 
-    <!-- 2. CURRENT ATTENDING PATIENT CARD -->
-    <!-- 
-         TODO: Backend Connection 
-         Wrap this entire card in an { if current_patient } block.
-         If no patient is active, you can show a "Waiting for next patient..." message instead.
-    -->
+    <!-- 2. CURRENT PATIENT CARD -->
+    {% if currently_consulting %}
     <div class="current-patient-card">
         <div class="patient-id-box">
             <div class="id-header">Current Attending Patient</div>
-            
-            <!-- TODO: Replace '---' with {{ current_patient.id }} -->
-            <div class="id-number">---</div> 
+            <div class="id-number">{{ currently_consulting.patient_id }}</div> 
         </div>
         
         <div class="patient-details-box">
-            <!-- TODO: Replace 'No Patient Selected' with {{ current_patient.name }} -->
-            <div class="patient-name">No Patient Selected</div>
+            <div class="patient-name">{{ currently_consulting.name }}</div>
             
             <div class="patient-info">
-                <!-- TODO: Replace these lines with:
-                     {{ current_patient.birthdate }}
-                     {{ current_patient.gender }}
-                     {{ current_patient.condition }} 
-                -->
-                Details will appear here...<br>
-                <br>
-                
+                Born: {{ currently_consulting.date_of_birth }}<br>
+                Gender: {{ currently_consulting.gender }}<br>
+                Condition: {{ currently_consulting.reason_for_visit }}
             </div>
 
             <div class="card-actions">
-                <!-- TODO: Add href to patient detail view -->
-                <button class="btn-small btn-details">Details</button>
-                <!-- TODO: Add form or href to mark patient as completed -->
-                <button class="btn-small btn-complete">Complete</button>
+                <a href="{% url 'patient_details' %}" class="btn-small btn-details">Details</a>
+                <!-- Link to Complete Current Patient -->
+                <a href="{% url 'complete_current_patient' %}" class="btn-small btn-complete">Complete</a>
             </div>
         </div>
     </div>
+    {% else %}
+    <div class="current-patient-card">
+        <div class="patient-id-box">
+            <div class="id-header">Current Attending Patient</div>
+            <div class="id-number">---</div>
+        </div>
+        <div class="patient-details-box">
+            <div class="patient-name">Waiting for patient...</div>
+            <div class="patient-info">No one is currently in consultation.</div>
+        </div>
+    </div>
+    {% endif %}
 
-    <!-- 3. SEARCH BAR -->
-    <div class="search-container">
-        <!-- Removed search icon span -->
-        <!-- TODO: Add name="q" and wrap in form for search functionality -->
-        <input type="text" class="search-input" placeholder="Search for anything">
+    <!-- 3. SEARCH (Optional) -->
+    <div style="position: relative; margin-bottom: 10px;">
+        <input type="text" style="width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 6px;" placeholder="Search for anything">
     </div>
 
     <!-- 4. PATIENT QUEUE TABLE -->
     <table class="queue-table">
         <thead>
             <tr>
-                <th style="width: 20%;">ID</th>
-                <th style="width: 40%;">Name</th>
+                <th style="width: 15%;">ID</th>
+                <th style="width: 35%;">Name</th>
                 <th style="width: 30%;">Condition</th>
-                <th style="width: 10%;"></th>
+                <th style="width: 20%;">Action</th>
             </tr>
         </thead>
         <tbody>
-            <!-- 
-                TODO: Loop through your queue list here.
-                Example Structure (Remove the backslashes when implementing):
-                { for patient in queue_list }
-                <tr>
-                    <td>{ patient.patient_id }</td>
-                    <td>{ patient.name }</td>
-                    <td>{ patient.condition }</td>
-                    <td style="text-align: right;">
-                        <button class="btn-small btn-details">Details</button>
-                    </td>
-                </tr>
-                { empty }
-                <tr>
-                    <td colspan="4" class="empty-message">No patients in queue.</td>
-                </tr>
-                { endfor }
-            -->
-            
-            <!-- Placeholder row so the table isn't invisible right now -->
+            {% for patient in waiting_patients %}
             <tr>
-                <td colspan="4" class="empty-message">
-                    <!-- This text appears when no data is connected yet -->
-                    (Patient list will load here)
+                <td>{{ patient.patient_id }}</td>
+                <td>{{ patient.name }}</td>
+                <td>{{ patient.reason_for_visit }}</td>
+                <td style="text-align: right; display: flex; gap: 5px; justify-content: flex-end;">
+                    <button class="btn-small btn-details">Details</button>
+                    <!-- THE CALL BUTTON -->
+                    <a href="{% url 'call_next_patient' patient.id %}" class="btn-small btn-call">Call</a>
                 </td>
             </tr>
-
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-message">No patients waiting in queue.</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 
 </div>
 
-<!-- Script for Live Time -->
 <script>
     function updateTime() {
         const now = new Date();
         document.getElementById('current-time').innerText = now.toLocaleTimeString();
-        document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
     setInterval(updateTime, 1000); 
     updateTime(); 
