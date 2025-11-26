@@ -57,8 +57,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 140px; /* Reduced height since icons are gone */
-        width: 260px;  /* Fixed width for consistency */
+        height: 140px;
+        width: 260px;
         flex-shrink: 0;
     }
 
@@ -69,7 +69,7 @@
     }
 
     .card-title {
-        font-size: 20px; /* Slightly larger text */
+        font-size: 20px;
         font-weight: 700;
         margin-bottom: 8px;
         color: #1a4d8c;
@@ -81,10 +81,10 @@
         line-height: 1.4;
     }
 
-    /* Specific Border Colors for variety */
-    .card-register:hover { border-bottom: 4px solid #3b82f6; } /* Blue */
-    .card-queue:hover { border-bottom: 4px solid #65d669; }    /* Green */
-    .card-public:hover { border-bottom: 4px solid #f59e0b; }   /* Orange */
+    /* Specific Border Colors */
+    .card-register:hover { border-bottom: 4px solid #3b82f6; }
+    .card-queue:hover { border-bottom: 4px solid #65d669; }
+    .card-public:hover { border-bottom: 4px solid #f59e0b; }
 
 </style>
 
@@ -95,24 +95,22 @@
 
     <div class="action-container">
         
-        <!-- Row 1: Primary Actions -->
         <div class="action-row">
-            <!-- 1. REGISTER PATIENT -->
-            <a href="{% url 'checkin' %}" class="action-card card-register">
+            <!-- LINK 1: REGISTER -->
+            <a href="{% url 'patient_check_in' %}" class="action-card card-register">
                 <div class="card-title">Register Patient</div>
                 <div class="card-desc">Check-in a new patient</div>
             </a>
 
-            <!-- 2. VIEW PATIENT QUEUE -->
-            <a href="{% url 'dashboard' %}" class="action-card card-queue">
+            <!-- LINK 2: MANAGE QUEUE -->
+            <a href="{% url 'patient_management' %}" class="action-card card-queue">
                 <div class="card-title">Manage Queue</div>
                 <div class="card-desc">View active patients and status</div>
             </a>
         </div>
 
-        <!-- Row 2: Public Display (Centered) -->
         <div class="action-row">
-            <!-- 3. PUBLIC DASHBOARD -->
+            <!-- LINK 3: PUBLIC DISPLAY -->
             <a href="{% url 'queue_display' %}" target="_blank" class="action-card card-public">
                 <div class="card-title">Public Display</div>
                 <div class="card-desc">Open waiting room screen</div>
